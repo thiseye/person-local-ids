@@ -21,3 +21,4 @@ Approach:
 - The provided solution should handle a moderate amount of data very quickly. For handling a larger amount, I wanted to parallize and scale out using Akka but knew I wouldn't have time for that in a few hours.
 - The app is currently single-threaded otherwise it'd surely run into data race issues. It should use transactions or other locking mechanism to maintain consistency should there be more than one reader/writer in the future.
 - The general description of the algorithm is to check if any of the local IDs on a given row are already in the database. If there are, use the lowest person ID of those entries, otherwise assign a new unique numeric ID. Update any rows that have a person ID that is not equal to this ID. Insert any local IDs that aren't already in the database.
+- Normally, I'd have unit tests, but I ran out of time to write them and to do other testing.
