@@ -53,7 +53,7 @@ class InputPersister(csvFile : String) {
 
       val insertStmt = connection.createStatement
       insertStmt.executeUpdate(
-        "INSERT INTO `public`.`Person` (`localId`, `localIdType`, `personId`) " +
+        s"INSERT INTO `${MySqlConnection.schema}`.`Person` (`localId`, `localIdType`, `personId`) " +
           s"VALUES ${valuesClause};")
     }
   }
@@ -70,7 +70,7 @@ class InputPersister(csvFile : String) {
 
       val updateStmt = connection.createStatement
       updateStmt.executeUpdate(
-        s"UPDATE `public`.`Person` SET personId = ${newUuid} WHERE ${whereClause};")
+        s"UPDATE `${MySqlConnection.schema}`.`Person` SET personId = ${newUuid} WHERE ${whereClause};")
     }
   }
 
@@ -80,12 +80,14 @@ class InputPersister(csvFile : String) {
     // Ex: "(localId = 'xyz' and localIdType = 1) OR (localId = 'abc' and localIdType = 2)"
     val whereClause = valueTuples.map(tuple => s"(localId = '${tuple._1}' AND localIdType = ${tuple._2})").mkString(" OR ")
 
-    queryStmt.executeQuery(s"SELECT personId, localId, localIdType FROM `public`.`Person` WHERE $whereClause")
+    queryStmt.executeQuery(s"SELECT personId, localId, localIdType FROM `${MySqlConnection.schema}`.`Person` WHERE $whereClause")
   }
 
   def process = {
     for (values <- reader) {
       writeValue(values)
     }
+
+    connection.close()
   }
 }

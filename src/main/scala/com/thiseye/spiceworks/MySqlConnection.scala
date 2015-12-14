@@ -2,6 +2,10 @@ package com.thiseye.spiceworks
 
 import java.sql.DriverManager
 
+object MySqlConnection {
+  val schema = "public"
+}
+
 class MySqlConnection {
 
   val url = "jdbc:mysql://localhost:3306/mysql"
